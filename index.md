@@ -1,37 +1,12 @@
-## Welcome to GitHub Pages
+# Astrodynamics Research
 
-You can use the [editor on GitHub](https://github.com/DhruvJ22/Astrodynamics_Research/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+This repository contains highlights of the Astrodynamics research that I am doing at Purdue University as a member of the Multi-Body Dynamics Research Group (https://engineering.purdue.edu/people/kathleen.howell.1/index.html). 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Research Focus
+The focus of my research is Quasi-Periodic Orbits in the Circular Restricted Three-Body Problem model. I hope to leverage these dynamical structuresto design host orbits for logistics depots in the cislunar space!
 
-### Markdown
+### Index
+1. Families of Periodic Orbits
+2. Families of Quasi-Periodic Orbits
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/DhruvJ22/Astrodynamics_Research/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Checkout my contributions to [Poliastro](https://docs.poliastro.space/en/stable/)!
