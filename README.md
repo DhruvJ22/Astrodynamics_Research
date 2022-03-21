@@ -3,7 +3,9 @@
 This repository contains highlights of the Astrodynamics research that I am doing at Purdue University as a member of the Multi-Body Dynamics Research Group (https://engineering.purdue.edu/people/kathleen.howell.1/index.html). 
 
 ## Purpose
-I have been working on simulating and investigating the CR3BP model since the beginning of 2021. After a painstaking amount of work, I have been able to successfully able to simulate the model and target known structures in it. After a lot of iterations I have converted my initial code that I wrote using "Design after the fact" to be closer to "Design for contribution". 
+I have been working on simulating and investigating the CR3BP model since the beginning of 2021. After a painstaking amount of work, I have been able to successfully able to simulate the model and target known structures in it. After a lot of refactoring sessions I have converted my initial code that I wrote using "Design after the fact" to be closer to "Design for contribution". 
+
+_**This repo serves as an example of my experience with implementation of numerical methods, numerical optimization, numerical linear algebra, production quality coding, and software design principles.**_
 
 ## Setup
 The above set of programs provides a robust setup for people to play with and understand periodic orbits and the general dynamical flows in CR3BP.
@@ -19,6 +21,7 @@ Production quality software  design practices were used to design the programs. 
 5. Avoided cryptic nesting
 6. Functions with similar argument structure 
 7. Single Inhertiance and Encapsulation
+8. Modular structure - will enable smooth inclusion of Multipls shooter algorithm
 
 The current work requires the widely used numpy, scipy, plotly and matplotlib libraries. 
 
@@ -44,8 +47,14 @@ There are an infinite number of periodic orbits but the three general type of fa
 
 ![EM_L2_vertical](https://user-images.githubusercontent.com/33181026/159376601-ca10cf77-0685-46d9-81b8-960a53461c56.png)
 
-The repo consists of multiple other examples to showcase the robustness of the setup and its ability to compute periodic orbits around other libration points and other types of periodic orbits like lyapunov orbits and short period orbits. 
+The repo consists of multiple other examples to showcase the robustness of the setup and its ability to compute periodic orbits around other libration points and other types of periodic orbits like lyapunov orbits and short period orbits. The examples also serve as "tests" for the various functions and classes.
 
 ## Research Focus
 The focus of my research is Quasi-Periodic Orbits in the Circular Restricted Three-Body Problem model. The research has many exciting applications, one of the interesting ones being to be able to leverage these dynamical structuresto design host orbits for logistics depots in the cislunar space!
 
+## References 
+**Software design principles:**
+1. Gamma, E., Helm, R., &amp; Johnson, R. (1998). Design patterns elements of Reusable Object Oriented Software. Addison Wesley. 
+2. Wilson, G. (2022). Twelve quick tips for software design. PLOS Computational Biology, 18(2). https://doi.org/10.1371/journal.pcbi.1009809 
+3. Silen, P. (2020, March 11). Useful tips for naming your variables. Medium. Retrieved March 21, 2022, from https://betterprogramming.pub/useful-tips-for-naming-your-variables-8139cc8d44b5 
+4. 4. Patrick J Mineault & The Good Research Code Handbook Community (2021). The Good Research Code Handbook. Zenodo. doi:10.5281/zenodo.5796873
