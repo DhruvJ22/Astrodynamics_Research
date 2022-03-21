@@ -23,26 +23,68 @@ These are some of the referneces that provide a comprehensive brackground and ha
 3. V. Szebehely, "Theory of Orbits: The Restricted Problem of Three Bodies", 1967
 4. W. Koon, M. Lo, J. Marsden, S. Ross, "Dynamical Systems, The Three-Body Problem, and Space Mission Design", 2006
 """
-
+import copy
 import numpy as np
 from cr3bp_model_master import cr3bp_model
 
 # Inherit attributes and methods of cr3bp_model
 class periodic_orbit(cr3bp_model):    
-    """ Base class to investigate dynamics in CR3BP -> EOM propagator, JC calculation
+    """ Child class of cr3bp_model; focuss on periodic orbit computation
     """   
     
     def __init__(self, sys_chars_vals, ic, tf=0, teval=None, stm_bool=0, xcross_cond=0, int_method='DOP853'):
-        
+        """
+        Constructor
+        Parameters
+        ----------
+        sys_chars_vals : object
+            object of Class sys_char
+        ic : numpy ndarray (6x1), {Can handle all 42 states for CR3BP+STM integration}
+            States are defined about the barycenter of the two primaries, P1 and P2
+            Initial condition: 6 states to compute a trajectory;
+            [0:x0, 1:y0, 2:z0, 3:vx0, 4:vy0, 5:vz0] [non-dimensional] [nd]
+            default = [0,0,0,0,0,0]
+        tf : float
+            Integration time [nd]
+            Can be negative or positive, negative => Integration in backwards time, default = 0
+        teval: list of float
+            Contains time stamps at which the numerically integrated results will be saved
+        int_tol : float
+            Absolute = Relative Integration Tolerance
+            The default is 1e-12.
+        stm_bool : boolean, optional
+            0: CR3BP EOM Integration
+            1: CR3BP + STM EOM Integration
+            The default is 0.
+        xcross_cond : int, optional
+            0 => No y-crossing check
+            1 => Events function to check when crossed y axis in any direction
+            2 => Events function to check when corssed y axis from -y to +y
+            The default is 0.
+        int_method : string, optional
+            Specify integration scheme: 'DOP853' or 'LSODA'
+            The default is 'DOP853'.
+        """        
         # Call __init__ of cr3bp_model
         super().__init__(sys_chars_vals, ic, tf=tf, teval=teval, stm_bool=stm_bool, int_method=int_method)
+        
+        # Initializes object attributes
+        self.sys_period_targ = 1
+        self.JCd = None
+        self.xfree = np.zeros((0))
+        self.xconstraints = np.zeros((0))
+        self.xdesired = np.zeros((0))
+        self.stm_row_index = 0
+        self.stm_col_index = 0
+        self.stm_row_len = 0
+        self.stm_col_len = 0
+
 
     # Set initial guess, tf_guess as ic and tf
     def single_shooter(self,
         free_vars,
         constraints,
         sym_period_targ=1 / 2,
-        JCd=None,
         palc_args=None,
         conv_tol=1e-12,
         int_tol=1e-12,
@@ -53,14 +95,6 @@ class periodic_orbit(cr3bp_model):
     
         Parameters
         ----------
-        mu :  float, M2/(M1+M2)
-            M1 and M2 are mass of Primary Bodies and M2<M1
-        initial_guess : numpy ndarray (6x1)
-            States are defined about the barycenter of the two primaries, P1 and P2
-            Initial guess: 6 states to target a Periodic Orbti;
-            [0:x0, 1:y0, 2:z0, 3:vx0, 4:vy0, 5:vz0] [non-dimensional] [nd]
-        tf_guess : float
-            Period guess of a periodic orbit[nd], should be positive, not validated for negative time
         free_vars : list of strings
             Describes the parameters set as free variables
             Possible paramters: ['x','y','z','vx','vy','vz','t']
@@ -77,7 +111,9 @@ class periodic_orbit(cr3bp_model):
         palc_args : dictionary containting information for Pseudo-Arc Length Continuation, optional
             'delta_s': step-size
             'free_var_prev': Free variables of the previously converged orbit
-            'delta_X*_prev': Null-Vector of DF of previously converged solution
+            'delta_X*_prev': Null-Vector of DF of previously converged  orbit
+            'prev_conv_soln': targeted IC of the previously converged orbit
+            'dx/dtheta': phase constraint 
             The default is None
         conv_tol : float, optional
             Convergence tolerance of the constraint vector -> Acceptable tolerance of L2 norm of the constraint vector . The default is 1e-12.
@@ -105,8 +141,9 @@ class periodic_orbit(cr3bp_model):
         
         # Initialization
         self.sym_period_targ = sym_period_targ
-        self.JCd = JCd
         iterflag = None
+        ic_original = copy.copy(self.ic)
+        tf_original = copy.copy(self.tf)
         
         # Free vairables and Constraints paramters logical error check
         if "jc" in free_vars:
@@ -122,7 +159,7 @@ class periodic_orbit(cr3bp_model):
             print("PALC constraint included")
     
         # Computes tf using events function to check y axis crossing; used to get accurate TOF if symmetry is to be used 
-        self.events_func_ycrossing_check(free_vars)
+        self.__events_func_ycrossing_check(free_vars)
 
         # Propagate I.C. to new tf 
         self.xcross_cond = 0
@@ -130,10 +167,10 @@ class periodic_orbit(cr3bp_model):
         results_stm = self.propagate()
     
         # Setup Targeter components: X, FX, DF, DG
-        self.free_vars_setup_update(free_vars, purpose='setup') # X
-        identity_temp = self.constraints_setup_update(constraints, results_stm,purpose='setup') # xconstraint and xdesired
-        FX = self.FX_setup_update(palc_args) # FX = xconstraint - xdesired
-        self.DF, DG = self.DF_DG_setup(self.xfree, self.xconstraint, palc_args) # DF, DG
+        self.__free_vars_setup_update(free_vars, purpose='setup') # X
+        identity_temp = self.__constraints_setup_update(constraints, results_stm,purpose='setup') # xconstraint and xdesired
+        FX = self.__FX_setup_update(palc_args) # FX = xconstraint - xdesired
+        self.DF, DG = self.__DF_DG_setup(self.xfree, self.xconstraint, palc_args) # DF, DG
             
         print("FX:",constraints,"X:",free_vars,"\nTf0:",self.tf, "JC0:", self.JC(self.ic))    
         print("Iteration:", 0, "|FX|=", np.linalg.norm(FX))
@@ -146,7 +183,7 @@ class periodic_orbit(cr3bp_model):
             # Update STM after each iteration to converge faster
 
             # Compute DF, Jacobian Matrix
-            self.compute_DF(free_vars, constraints, results_stm, identity_temp, palc_args)            
+            self.__compute_DF(free_vars, constraints, results_stm, identity_temp, palc_args)            
     
             # Update Free variable vector, include PALC constraint if PALC is being used
             if palc_args is None:
@@ -157,24 +194,20 @@ class periodic_orbit(cr3bp_model):
                 self.xfree = self.newton_raphson_update(self.xfree, FX, DG)
     
             # Update IC and tf using the updated xfree
-            self.free_vars_setup_update(free_vars)
+            self.__free_vars_setup_update(free_vars)
             
             # Propagate with updated IC and tf
             results_stm = self.propagate()
             
             # Update xconstraint
-            _ = self.constraints_setup_update(constraints, results_stm)
+            _ = self.__constraints_setup_update(constraints, results_stm)
 
-            FX = self.FX_setup_update(palc_args)
+            FX = self.__FX_setup_update(palc_args)
     
             print("Iteration:", count + 1, "|FX|=", np.linalg.norm(FX))
     
             count = count + 1
-    
-        if count > Nmax:
-            iterflag = True
-            print("\nMaximum number of iterations exceeded. Recompute with smaller step size, different continuaton paramter, or recheck setup.\n")
-    
+            
         # Use targeted states to generate targeted Periodic orbit
         print(self.tf, sym_period_targ)
         
@@ -183,7 +216,7 @@ class periodic_orbit(cr3bp_model):
         
         # Compute Jacobian if retargeted orbit cannot meet while loop condition, priimarily used for Pseudo-Arc Length Continuation
         if count == 0:
-            self.compute_DF(free_vars, constraints, results_stm, identity_temp, palc_args)       
+            self.__compute_DF(free_vars, constraints, results_stm, identity_temp, palc_args)       
             # dxf_dt = self.compute_dxf_dt(results_stm)    
             # # Setup DF, Jacobian Matrix
             # stm_temp = results_stm["stm"][self.stm_row_index, :, -1]
@@ -193,13 +226,19 @@ class periodic_orbit(cr3bp_model):
             # if sym_period_targ == 1:
             #     self.DF[:self.stm_row_len, :self.stm_col_len] = (self.DF[:self.stm_row_len, :self.stm_col_len] - identity_temp)
     
+        if count > Nmax:
+            iterflag = True
+            print("\nMaximum number of iterations exceeded. Recompute with smaller step size, different continuaton paramter, or recheck setup.\n")
+            self.tf = tf_original
+            self.ic = ic_original
+    
         # Used for PALC
         results_stm["DF"] = self.DF
         results_stm["free_vars_targeted"] = self.xfree
         
         return results_stm, iterflag
     
-    def events_func_ycrossing_check(self, free_vars):
+    def __events_func_ycrossing_check(self, free_vars):
         """
         If symmetry is to be used to target then use events function to get "tf" till next y-axis crossinng        
         Parameters
@@ -222,7 +261,7 @@ class periodic_orbit(cr3bp_model):
             self.tf = self.tf * self.sym_period_targ
     
     
-    def free_vars_setup_update(self, free_vars, purpose='update'):
+    def __free_vars_setup_update(self, free_vars, purpose='update'):
         """
         Computes intial Free Variable Vector and Updates IC and tf after computing a new xfree
         Parameters
@@ -264,7 +303,7 @@ class periodic_orbit(cr3bp_model):
             
 
     
-    def constraints_setup_update(self, constraints, results_stm, purpose ='update'):
+    def __constraints_setup_update(self, constraints, results_stm, purpose ='update'):
         """
         Computes intial xconstraint and xdesired Vector and Updates the two after computing a new xfree
         Parameters
@@ -319,7 +358,7 @@ class periodic_orbit(cr3bp_model):
         return identity_temp
     
     
-    def FX_setup_update(self, palc_args):
+    def __FX_setup_update(self, palc_args):
         """
         Computes the Constraint vector = F(x) = xconstraint-xdesired
         Parameters
@@ -327,7 +366,9 @@ class periodic_orbit(cr3bp_model):
         palc_args : dictionary containting information for Pseudo-Arc Length Continuation, optional
             'delta_s': step-size
             'free_var_prev': Free variables of the previously converged orbit
-            'delta_X*_prev': Null-Vector of DF of previously converged solution
+            'delta_X*_prev': Null-Vector of DF of previously converged  orbit
+            'prev_conv_soln': targeted IC of the previously converged orbit
+            'dx/dtheta': phase constraint 
             The default is None
 
         Returns
@@ -357,7 +398,7 @@ class periodic_orbit(cr3bp_model):
         return FX
 
 
-    def DF_DG_setup(self, xfree, xconstraint, palc_args):
+    def __DF_DG_setup(self, xfree, xconstraint, palc_args):
         if palc_args is not None and self.sym_period_targ == 1:
             DF = np.zeros((len(xconstraint)+1, len(xfree))) # To account for phase constraint when PALC used
         else:    
@@ -401,7 +442,7 @@ class periodic_orbit(cr3bp_model):
         dJC_dx = np.array([2 * Ux_ic, 2 * Uy_ic, 2 * Uz_ic, -2 * self.ic[3], -2 * self.ic[4], -2 * self.ic[5]])
         return dJC_dx
 
-    def compute_DF(self,free_vars,constraints,results_stm, identity_temp,palc_args):    
+    def __compute_DF(self,free_vars,constraints,results_stm, identity_temp,palc_args):    
         """
         Computes the Analytical Jacobian Matrix, "DF", for a PO targeter
         Parameters

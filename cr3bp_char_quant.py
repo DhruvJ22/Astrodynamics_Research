@@ -126,7 +126,7 @@ class sys_chars:
         """
         
         mu_pi = []
-        mu_body, distances = self.bodies_char()
+        mu_body, distances = self.__bodies_char()
     
         try:
             temp1 = mu_body[p1]
@@ -166,7 +166,7 @@ class sys_chars:
             return mu, dist, tstar
 
 
-    def bodies_char(self):
+    def __bodies_char(self):
         """Returns mu value of various celestial bodies and distance between P1-P2 systems
     
         Returns

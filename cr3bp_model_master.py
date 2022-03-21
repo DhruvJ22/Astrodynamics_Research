@@ -32,7 +32,7 @@ class cr3bp_model:
     """ Base class to investigate dynamics in CR3BP -> EOM propagator, JC calculation
     """
     
-    def __init__(self, sys_chars_vals, ic, tf=0, teval=None, int_tol=1e-12, stm_bool=0, xcross_cond=0, int_method='DOP853'):
+    def __init__(self, sys_chars_vals, ic=np.zeros((6)), tf=0, teval=None, int_tol=1e-12, stm_bool=0, xcross_cond=0, int_method='DOP853'):
         """
         Constructor
         
@@ -44,6 +44,7 @@ class cr3bp_model:
             States are defined about the barycenter of the two primaries, P1 and P2
             Initial condition: 6 states to compute a trajectory;
             [0:x0, 1:y0, 2:z0, 3:vx0, 4:vy0, 5:vz0] [non-dimensional] [nd]
+            default = [0,0,0,0,0,0]
         tf : float
             Integration time [nd]
             Can be negative or positive, negative => Integration in backwards time, default = 0
@@ -74,7 +75,7 @@ class cr3bp_model:
         self.stm_bool = stm_bool
         self.xcross_cond = xcross_cond
         self.int_method = int_method
-        
+        self.results = {}
         
     def propagate(self):
         """Numerically Integrate Circular Restricted Three-Body Problem EOMs
@@ -145,9 +146,9 @@ class cr3bp_model:
         fun = solve_ivp(self.__Nondim_DE_CR3BP_STM, [t0, self.tf], self.ic, method=self.int_method, t_eval = self.teval, events=xcross, rtol=self.int_tol, atol=self.int_tol)    
        
         # Save data to dictionary
-        results = self.save_prop_data_cr3p(fun, self.stm_bool, datatype)
+        self.results = self.__save_prop_data_cr3p(fun, self.stm_bool, datatype)
     
-        return results
+        return self.results
     
     # Skeleton function for CR3BP + STM Numerical Integration
     def __Nondim_DE_CR3BP_STM(self, t, state_stm):
@@ -209,7 +210,7 @@ class cr3bp_model:
         return dstate_stm
     
     
-    def save_prop_data_cr3p(self, fun, stm_bool, datatype):
+    def __save_prop_data_cr3p(self, fun, stm_bool, datatype):
         """Saves Numerical Integration results to a dictionary
     
         Parameters
@@ -255,7 +256,7 @@ class cr3bp_model:
                         stm_vals[t1, t2, t3] = fun.y[count + 6][t3]
                     count = count + 1
     
-        results = {}
+        results = {}    
         results["t"] = np.asarray(t)
         results["states"] = np.concatenate(
             [
@@ -275,7 +276,7 @@ class cr3bp_model:
         return results
     
     
-    def rel_dist_cr3bp(self, state):
+    def rel_dist_cr3bp(self, state=None):
         """Compute distance between a satellite(P3) defined in P1-P2 barycenter
             to P1 and P2 in CR3BP
     
@@ -283,7 +284,7 @@ class cr3bp_model:
         ----------
         states : numpy ndarray (6x1)
             States are defined about the barycenter of the two primaries, P1 and P2
-    
+            Default is None
         Returns
         -------
         dist_p1_p3 : float64/complex128
@@ -291,19 +292,23 @@ class cr3bp_model:
         dist_p2_p3 : float64/complex128
             distance between P3 and P2
         """
+        if state is None:
+            state = self.ic
+        
         dist_p1_p3 = ((state[0] + self.mu) ** 2 + state[1] ** 2 + state[2] ** 2) ** 0.5
         dist_p2_p3 = ((state[0] - 1 + self.mu) ** 2 + state[1] ** 2 + state[2] ** 2) ** 0.5
     
         return dist_p1_p3, dist_p2_p3
     
     
-    def uii_partials_cr3bp(self, state):
+    def uii_partials_cr3bp(self, state=None):
         """Compute second-derivate of the pseudo-potenital of the CR3BP EOMs
     
         Parameters
         ----------
         state : numpy ndarray (6x1)
             state are defined about the barycenter of the two primaries, P1 and P2
+            Default is None
     
         Returns
         -------
@@ -311,6 +316,9 @@ class cr3bp_model:
             Second-derivaitves of the pseudo-potenial of CR3BP
     
         """
+        if state is None:
+            state = self.ic
+            
         dist_p1_p3, dist_p2_p3 = self.rel_dist_cr3bp(state)
         
         one_minus_mu = 1 - self.mu
@@ -355,19 +363,22 @@ class cr3bp_model:
         return Uxx, Uyy, Uzz, Uxy, Uxz, Uyz
     
     
-    def ui_partials_acc_cr3bp(self, state):
+    def ui_partials_acc_cr3bp(self, state=None):
         """Compute first-derivateive of pseudo-potenital terms of the CR3BP EOMs and acceleration terms
         
         Parameters
         ----------
         state : numpy ndarray (6x1)
             state are defined about the barycenter of the two primaries, P1 and P2
+            Default is None
     
         Returns
         -------
         Ux, Uy, Uz, ax, ay, az: float64/complex128
             First-derivaitves of the pseudo-potenial of CR3BP and the accelration components
         """
+        if state is None:
+            state = self.ic
         
         dist_p1_p3, dist_p2_p3 = self.rel_dist_cr3bp(state)
         

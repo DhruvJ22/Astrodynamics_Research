@@ -41,7 +41,7 @@ for i in range(20):
     
     po.ic = copy.copy(results["states"][0, :])
     print(po.ic)
-    po.ic[2] += 0.0015
+    po.ic[2] += 0.001
     
 
 # results, iterflag = po_single_shooter_cr3bp(mu, ig, tf_guess, free_vars, constraints)
