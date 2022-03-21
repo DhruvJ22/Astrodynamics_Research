@@ -58,7 +58,7 @@ Plot family
 colourby = orb_fam_obj.targeted_po_char['jc']
 colourmap='plasma'
 cb_label = 'JC'
-title = 'EM_L4_Northern_Axial_family'
+title = 'CR3BP: Earth-Moon L4 Northern Axial family: DJ'
 data_trace = []
 # Add L4
 data_trace.append(go.Scatter3d(x=[li[0]], y=[0], z=[0], marker=dict(

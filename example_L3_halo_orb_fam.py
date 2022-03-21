@@ -56,7 +56,7 @@ Plot family
 colourby = orb_fam_obj.targeted_po_char['jc']
 colourmap='plasma'
 cb_label = 'JC'
-title = 'EM_L3_Halo_family_PALC'
+title = 'CR3BP: Earth-Moon L3 Halo family: DJ'
 data_trace = []
 # Add L2
 data_trace.append(go.Scatter3d(x=[li[0]], y=[0], z=[0], marker=dict(
