@@ -33,7 +33,7 @@ Any hamiltonion dynamical model usually has 3 kinds of solutions: equilibrium so
 
 The current set of programs can compute the equillibrium solutions (Libration Points) and periodic solutions (Periodic Orbits) of CR3BP. Furthermore, it is capable of computing families of periodic solutions (Family of Periodic Orbits).
 
-There are an infinite number of periodic orbits but the three general type of families of known symmetry are Halo family, Axial family, Vertical family. 
+There are an infinite number of periodic orbits. The three periodic orbit families that exploit the three distinct symmetries in the CR3BP model are presented below.
 
 1. **Halo family orbits** show XZ plane symmetry. Below is an example of Halo family in Earth-Moon system around L3 libration point. _Some of the members were computed using Natural Parameter Continuation in 'z' using XZ plane symmetry with line search for step size. Other members were computed using Pseudo-arc length continuation using XZ plane symmetry with line search for step size._
 
