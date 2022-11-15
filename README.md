@@ -57,4 +57,4 @@ The focus of my research is Quasi-Periodic Orbits in the Circular Restricted Thr
 1. Gamma, E., Helm, R., &amp; Johnson, R. (1998). Design patterns elements of Reusable Object Oriented Software. Addison Wesley. 
 2. Wilson, G. (2022). Twelve quick tips for software design. PLOS Computational Biology, 18(2). https://doi.org/10.1371/journal.pcbi.1009809 
 3. Silen, P. (2020, March 11). Useful tips for naming your variables. Medium. Retrieved March 21, 2022, from https://betterprogramming.pub/useful-tips-for-naming-your-variables-8139cc8d44b5 
-4. 4. Patrick J Mineault & The Good Research Code Handbook Community (2021). The Good Research Code Handbook. Zenodo. doi:10.5281/zenodo.5796873
+4. Patrick J Mineault & The Good Research Code Handbook Community (2021). The Good Research Code Handbook. Zenodo. doi:10.5281/zenodo.5796873
