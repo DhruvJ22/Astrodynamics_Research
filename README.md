@@ -29,7 +29,7 @@ Checkout my in-progress contributions to [Poliastro](https://docs.poliastro.spac
 
 ## Examples
 
-Any dynamic model usually has 3 kinds of solutions: equilibrium solutions, periodic solutions and quasi-periodic solutions. In addition, these solutions usually exist as families of solutions.
+Any hamiltonion dynamical model usually has 3 kinds of solutions: equilibrium solutions, periodic solutions and quasi-periodic solutions. In addition, these solutions usually exist as families of solutions.
 
 The current set of programs can compute the equillibrium solutions (Libration Points) and periodic solutions (Periodic Orbits) of CR3BP. Furthermore, it is capable of computing families of periodic solutions (Family of Periodic Orbits).
 
