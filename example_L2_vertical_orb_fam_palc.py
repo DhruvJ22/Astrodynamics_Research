@@ -38,8 +38,6 @@ orb_fam_obj = periodic_orbit_fam_continuation(sys_p1p2, ig,tf=tf_guess)
 orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1/4, Nmax=10, 
                     step_size= 1e-4, num_fam_members=3, param_continue="x", line_search=True)
 
-ig = orb_fam_obj.ic
-tf = orb_fam_obj.tf
 """
 PALC
 """
@@ -47,12 +45,12 @@ PALC
 #        Exploits Periodcity(sym_perioid_targ set to 1)
 #        Continue in 'x' using Natural Paramter Continuaton to compute 20 family members
 orb_fam_obj.palc_po_fam(free_vars, constraints,sym_period_targ=1/4, Nmax=10, 
-                    step_size= -1e-1*3, num_fam_members=10, line_search=True)
+                    step_size= -1e-1*3, num_fam_members=6, line_search=True)
 
-orb_fam_obj.ic = ig
-orb_fam_obj.tf = tf
-orb_fam_obj.palc_po_fam(free_vars, constraints,sym_period_targ=1/4, Nmax=10, 
-                    step_size= 1e-1, num_fam_members=25, line_search=True)
+# orb_fam_obj.ic = ig
+# orb_fam_obj.tf = tf
+# orb_fam_obj.palc_po_fam(free_vars, constraints,sym_period_targ=1/4, Nmax=10, 
+#                     step_size= 1e-1, num_fam_members=25, line_search=True)
 
 """
 Plot family

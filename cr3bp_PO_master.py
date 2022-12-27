@@ -86,8 +86,8 @@ class periodic_orbit(cr3bp_model):
         constraints,
         sym_period_targ=1 / 2,
         palc_args=None,
-        conv_tol=1e-12,
         int_tol=1e-12,
+        conv_tol=1e-12,
         Nmax=50,
     ):
         """Single shooter targeter for a Periodic Orbit defined in the CR3BP model

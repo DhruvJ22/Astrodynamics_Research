@@ -51,7 +51,7 @@ orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1 / 2, Nmax=20,
 #        Continue in 'JC' using Natural Paramter Continuaton to compute 10 family members
 # Note: JC coonstraint is added without being explicity defined as a constraint
 orb_fam_obj.JCd = orb_fam_obj.JC() - 1e-3
-orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1, Nmax=20, 
+orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1/2, Nmax=20, 
                     step_size= -1e-3*5, num_fam_members=10, param_continue="jc", line_search=False)
 
 
@@ -73,23 +73,23 @@ orb_fam_obj.JCd -= 1e-5
 orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1, Nmax=10, 
                     step_size= -1e-3*5, num_fam_members=20, param_continue="jc", line_search=True)
 
-"""
-Constraint updated to use XZ plane symmetry
-"""
-constraints = [
-    "y",
-    "vx",
-]  # All constraints, 'jc' can be added explicity or will be added in npc_fam_fam_cr3bp if to be continued in 'jc'
+# """
+# Constraint updated to use XZ plane symmetry
+# """
+# constraints = [
+#     "y",
+#     "vx",
+# ]  # All constraints, 'jc' can be added explicity or will be added in npc_fam_fam_cr3bp if to be continued in 'jc'
 
-# Target Lyapunov orbit using Single Shooter Variable Time setup
-#        Exploits XZ plane crossing (sym_perioid_targ set to 1/2)
-#        Continue in 'JC' using Natural Paramter Continuaton to compute 100 family members
-#        Line search is used to update step size if unable to converge
-# Note: JC coonstraint is added without being explicity defined as a constraint
+# # Target Lyapunov orbit using Single Shooter Variable Time setup
+# #        Exploits XZ plane crossing (sym_perioid_targ set to 1/2)
+# #        Continue in 'JC' using Natural Paramter Continuaton to compute 100 family members
+# #        Line search is used to update step size if unable to converge
+# # Note: JC coonstraint is added without being explicity defined as a constraint
 
-orb_fam_obj.JCd = orb_fam_obj.JC()
-orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1/2, Nmax=10, 
-                    step_size= -1e-3*5, num_fam_members=10, param_continue="jc", line_search=True)
+# orb_fam_obj.JCd = orb_fam_obj.JC()
+# orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1/2, Nmax=10, 
+#                     step_size= -1e-3*5, num_fam_members=10, param_continue="jc", line_search=True)
 
 """
 Plot family

@@ -74,7 +74,7 @@ class periodic_orbit_fam_continuation(periodic_orbit):
             "monodromy": [],
         } # Stores key characterisitcs of each targeter periodic orbit in the family
 
-    def npc_po_fam(self, free_vars, constraints, sym_period_targ=1 / 2, conv_tol=1e-12, int_tol=1e-12, Nmax=50, 
+    def npc_po_fam(self, free_vars, constraints, sym_period_targ=1 / 2, int_tol=1e-12, conv_tol=1e-12, Nmax=50, 
                         step_size=1e-4, num_fam_members=1, param_continue="x", line_search=False, line_search_params = None):
         """
         Use Natural Parameter Continuation to compute family of periodic orbit
@@ -241,7 +241,7 @@ class periodic_orbit_fam_continuation(periodic_orbit):
             self.JCd += step_size # Update JC    
         
         
-    def palc_po_fam(self, free_vars, constraints, sym_period_targ=1 / 2, conv_tol=1e-12, int_tol=1e-12, Nmax=50, 
+    def palc_po_fam(self, free_vars, constraints, sym_period_targ=1 / 2, int_tol=1e-12, conv_tol=1e-12, Nmax=50, 
                         step_size=1e-4, num_fam_members=1, param_continue="x", line_search=False, line_search_params = None):    
         """
         Use Pseudo-arc length Continuation to compute family of periodic orbit
