@@ -61,7 +61,8 @@ def plot_orbits(
         ),
         aspectmode="data",
         aspectratio={"x": 1, "y": 1, "z": 1},
-    )
+        )
+    
 
     colour_range = [min(colourby), max(colourby)]
     cmap = matplotlib.cm.get_cmap(colourmap)
@@ -114,7 +115,15 @@ def plot_orbits(
         font=dict(size=18),
         template="plotly_dark",
         showlegend=False,
+        # margin = dict(
+        #      l= 0,
+        #      r= 0,
+        #      b= 0,
+        #      t= 0,
+        #      pad= 0)
     )
+
+    fig.layout.scene.camera.projection.type = "orthographic"
 
     if save is True:
         fig.write_html(title + ".html")
