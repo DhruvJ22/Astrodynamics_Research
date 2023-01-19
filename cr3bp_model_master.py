@@ -12,7 +12,7 @@ Objective: This file contains a Class that will serve as the Base Class for any 
         1. Integrate CR3BP EOMs
         2. Integrate CR3BP EOMs + Compute the State Transition Matrix for each state
         3. Optional events function is added to numerical integrator to track when states move from -y to +y region and/or visa versa
-        4. Access solve_ivp->t_eval to save integrated results at set time stamps
+        4. Access solve_ivp-> t_eval to save integrated results at set time stamps
         5. Computes accelration, first-derivate of pseudo-potential, and second-derivative of pseudo-potenital terms terms
         6. Compute Jacobi Constant [nd]
         

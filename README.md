@@ -1,9 +1,9 @@
 # Astrodynamics Research
 
-This repository contains highlights of the Astrodynamics research that I am doing at Purdue University as a member of the Multi-Body Dynamics Research Group (https://engineering.purdue.edu/people/kathleen.howell.1/index.html). 
+This repository contains _some_ highlights of the Astrodynamics research that I am doing at Purdue University as a member of the [Multi-Body Dynamics Research Group](https://engineering.purdue.edu/people/kathleen.howell.1/index.html). 
 
 ## Purpose
-I have been working on simulating and investigating the CR3BP model since the beginning of 2021. After a painstaking amount of work, I have been able to successfully simulate the model and target known structures in it. After a lot of refactoring sessions I have converted my initial code that I wrote using "Design after the fact" to be closer to "Design for contribution". 
+I have been working on simulating and investigating the dynamcis of a spacecraft in the cislunar space using the CR3BP model since the beginning of 2021. After a painstaking amount of work, I have been able to successfully simulate the model and target known structures in it. After a lot of refactoring sessions I have converted my initial code that I wrote using "Design after the fact" to be closer to "Design for contribution". 
 
 _**This repo serves as an example of my experience with implementation of numerical methods, numerical optimization, numerical linear algebra, production quality coding, and software design principles.**_
 

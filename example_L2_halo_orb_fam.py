@@ -5,6 +5,7 @@
 Obj: To compute family of L2 Halo Orbit
     Single Shooter Variabl Time Setup
     1. Continue in 'z' + XZ plane symmetry => targets Period/2 states
+    2. Continue in 't' + full state continuity => target Period states
     2. PALC+ XZ plane symmetry => targets Period/2 states
 
 Initial Condition obtained from:
@@ -35,13 +36,19 @@ orb_fam_obj = periodic_orbit_fam_continuation(sys_p1p2, ig,tf=tf_guess)
 #        Exploits XZ plane symmetry (sym_perioid_targ set to 1/2)
 #        Continue in 'z' using Natural Paramter Continuaton
 orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1/2, Nmax=10, 
-                    step_size= 1e-3, num_fam_members=6, param_continue="z", line_search=True)
+                    step_size= -1e-3, num_fam_members=6, param_continue="z", line_search=True)
 
 
 free_vars = ["x", "z", "vy", "t"]
 constraints = ["x", "z", "vz"]
 orb_fam_obj.npc_po_fam(free_vars, constraints,sym_period_targ=1, Nmax=10, 
-                    step_size= -1e-4, num_fam_members=50, param_continue="t", line_search=True)
+                    step_size= -1e-4, num_fam_members=5, param_continue="t", line_search=True)
+
+free_vars = ["x", "z", "vy", "t"]
+constraints = ["y", "vx", "vz"]
+
+orb_fam_obj.palc_po_fam(free_vars, constraints,sym_period_targ=1/2, Nmax=10, 
+                    step_size= -1e-2*5, num_fam_members=30, line_search=True)
 """
 PALC
 # """
