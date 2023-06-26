@@ -50,7 +50,7 @@ There are an infinite number of periodic orbits. The three periodic orbit famili
 The repo consists of multiple other examples to showcase the robustness of the setup and its ability to compute periodic orbits around other libration points and other types of periodic orbits like lyapunov orbits and short period orbits. The examples also serve as "tests" for the various functions and classes.
 
 ## Research Focus
-The focus of my research is Quasi-Periodic Orbits in the Circular Restricted Three-Body Problem model. The research has many exciting applications, one of the interesting ones being to be able to leverage these dynamical structuresto design host orbits for logistics depots in the cislunar space!
+The focus of my research is on leveraging Quasi-Periodic Orbits and their associated manifolds to design transfer frameworks for transfers between periodic orbits using the Circular Restricted Three-Body Problem model in the cislunar space!
 
 ## References 
 **Software design principles:**
