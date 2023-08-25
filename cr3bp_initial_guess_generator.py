@@ -21,7 +21,7 @@ These are some of the referneces that provide a comprehensive brackground and ha
 """
 import numpy as np
 from cr3bp_lib_calc import lib_pt_loc
-from cr3bp_model_master import cr3bp_model
+from cr3bp_model_main import cr3bp_model
 
 
 def ig_lyap_orb_collinear_li_cr3bp(sys_chars_vals, pert_x, lib_num=1):

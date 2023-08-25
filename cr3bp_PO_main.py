@@ -25,7 +25,7 @@ These are some of the referneces that provide a comprehensive brackground and ha
 """
 import copy
 import numpy as np
-from cr3bp_model_master import cr3bp_model
+from cr3bp_model_main import cr3bp_model
 
 # Inherit attributes and methods of cr3bp_model
 class periodic_orbit(cr3bp_model):    

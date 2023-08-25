@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from cr3bp_char_quant import sys_chars
 from cr3bp_lib_calc import lib_pt_loc
-from cr3bp_PO_master import periodic_orbit
+from cr3bp_PO_main import periodic_orbit
 
 sys_p1p2 = sys_chars('Earth','Moon')
 mu = sys_p1p2.mu

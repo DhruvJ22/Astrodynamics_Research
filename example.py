@@ -10,8 +10,8 @@ This is an exmaple file to test the CR3BP functions
 import matplotlib.pyplot as plt
 from cr3bp_char_quant import sys_chars
 from cr3bp_lib_calc import lib_pt_loc
-from cr3bp_PO_master import cr3bp_model
-from cr3bp_PO_master import periodic_orbit
+from cr3bp_PO_main import cr3bp_model
+from cr3bp_PO_main import periodic_orbit
 # from PO_master import periodic_orbit
 sys_p1p2 = sys_chars('Earth','Moon')
 mu = sys_p1p2.mu

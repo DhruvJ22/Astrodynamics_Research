@@ -23,7 +23,7 @@ These are some of the referneces that provide a comprehensive brackground and ha
 import copy
 import numpy as np
 import scipy as sci
-from cr3bp_PO_master import periodic_orbit
+from cr3bp_PO_main import periodic_orbit
 
 # Inherit attributes and methods of periodic_orbits
 class periodic_orbit_fam_continuation(periodic_orbit):
