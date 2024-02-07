@@ -1,10 +1,12 @@
-# Couldn't automatically generate a config from your source code.
-# This is a generic template to serve as a base for your custom config
-# See: https://circleci.com/docs/configuration-reference
-version: 2.1
+# Executor is a docker container
+# cimg/base:stable -> is "CircleCI Convenience Image base" - stable verion that comprises of common tools and libraries used in envrionment development. It is feasible to define a custom dockerfile
+
+version: 2.1 # This is the version of CircleCi being used
+
+# Define jobs, order does not matter
 jobs:
   test:
-    docker:
+    docker: 
       - image: cimg/base:stable
     steps:
       - checkout
@@ -14,7 +16,7 @@ jobs:
       #    command: echo 'replace me with real tests!' && false
   build:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:stable # Uses same image as the test job
     steps:
       - checkout
       # Replace this with steps to build a package, or executable
@@ -25,19 +27,21 @@ jobs:
           path: example.txt
   deploy:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/base:stable # Uses same image as the test job
     steps:
       # Replace this with steps to deploy to users
       - run:
           name: deploy
           command: '#e.g. ./deploy.sh'
+
+# Define the order of the jobs to be executed
 workflows:
   example:
     jobs:
       - test
       - build:
-          requires:
+          requires: # Note that this is serialized to not run till test is passed
             - test
       - deploy:
-          requires:
+          requires: # Note that this is serialized to not run till test is passed
             - test
