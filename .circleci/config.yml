@@ -10,10 +10,9 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      # Replace this with a real test runner invocation
-      #- run:
-      #    name: Run tests
-      #    command: echo 'replace me with real tests!' && false
+      - run:
+         name: Run tests
+         command: echo 'replace me with real tests!' && false
   build:
     docker:
       - image: cimg/base:stable # Uses same image as the test job
