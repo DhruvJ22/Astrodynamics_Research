@@ -16,7 +16,7 @@ jobs:
             pip install pytest
       - run:
           name: Run tests
-          command: pytest /checkout/tests
+          command: pytest tests/
           assert: true  # Fail workflow on test failures (optional)
 
   build:
