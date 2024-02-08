@@ -11,8 +11,14 @@ jobs:
     steps:
       - checkout
       - run:
-         name: Run tests
-         command: echo 'replace me with real tests!' && false
+          name: Install dependencies
+          command: |
+            apt-get update -y && apt-get install -y python3 python3-pip
+            pip install pytest
+      - run:
+          name: Run tests
+          command: pytest /tests
+          assert: true  # Fail workflow on test failures (optional)
   build:
     docker:
       - image: cimg/base:stable # Uses same image as the test job
