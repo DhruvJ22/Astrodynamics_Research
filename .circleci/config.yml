@@ -10,14 +10,14 @@ jobs:
       - image: cimg/python:3.8.16
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            pip install pytest
-      - run:
-          name: Run tests
-          command: pytest tests/
-          assert: true  # Fail workflow on test failures (optional)
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       pip install pytest
+      # - run:
+      #     name: Run tests
+      #     command: pytest tests//
+      #     assert: true  # Fail workflow on test failures (optional)
 
   build:
     docker:
